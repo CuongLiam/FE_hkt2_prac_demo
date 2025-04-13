@@ -242,3 +242,32 @@ const handleEditSave = () => {
 
   displayProducts();
 };
+
+const toggleBtn = document.getElementById("toggle-theme");
+
+const setTheme = (mode) => {
+  if (mode === "dark") {
+    document.body.classList.add("dark-mode");
+    toggleBtn.innerText = "☀️ Light Mode";
+    toggleBtn.classList.remove("btn-dark");
+    toggleBtn.classList.add("btn-light");
+  } else {
+    document.body.classList.remove("dark-mode");
+    toggleBtn.innerText = "🌙 Dark Mode";
+    toggleBtn.classList.remove("btn-light");
+    toggleBtn.classList.add("btn-dark");
+  }
+
+  localStorage.setItem("theme", mode);
+};
+
+toggleBtn.addEventListener("click", () => {
+  const isDark = document.body.classList.contains("dark-mode");
+  setTheme(isDark ? "light" : "dark");
+});
+
+//load theme local
+document.addEventListener("DOMContentLoaded", () => {
+  const savedTheme = localStorage.getItem("theme") || "light";
+  setTheme(savedTheme);
+});
