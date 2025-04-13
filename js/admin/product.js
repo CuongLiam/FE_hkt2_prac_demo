@@ -1,50 +1,61 @@
-let products = [
-  {
-    id: 1,
-    name: "Wireless Mouse",
-    description: "Compact ergonomic wireless mouse",
-    price: 15.99,
-    imgUrl: "https://p1-ofp.static.pub//fes/cms/2024/05/20/x70abmv0yon191rf6haufcupbgcimu221325.png",
-    stock: 120,
-    status: true
-  },
-  {
-    id: 2,
-    name: "Mechanical Keyboard",
-    description: "RGB backlit mechanical keyboard",
-    price: 49.99,
-    imgUrl: "https://p1-ofp.static.pub//fes/cms/2024/05/20/x70abmv0yon191rf6haufcupbgcimu221325.png",
-    stock: 75,
-    status: true
-  },
-  {
-    id: 3,
-    name: "HD Monitor",
-    description: "24-inch Full HD LED monitor",
-    price: 129.99,
-    imgUrl: "https://p1-ofp.static.pub//fes/cms/2024/05/20/x70abmv0yon191rf6haufcupbgcimu221325.png",
-    stock: 35,
-    status: true
-  },
-  {
-    id: 4,
-    name: "USB-C Hub",
-    description: "7-in-1 USB-C hub with HDMI and Ethernet",
-    price: 29.95,
-    imgUrl: "https://p1-ofp.static.pub//fes/cms/2024/05/20/x70abmv0yon191rf6haufcupbgcimu221325.png",
-    stock: 200,
-    status: true
-  },
-  {
-    id: 5,
-    name: "Gaming Headset",
-    description: "Surround sound gaming headset",
-    price: 59.99,
-    imgUrl: "https://p1-ofp.static.pub//fes/cms/2024/05/20/x70abmv0yon191rf6haufcupbgcimu221325.png",
-    stock: 50,
-    status: true
-  },
+const saveProductsToStorage = () => {
+  localStorage.setItem("products", JSON.stringify(products));
+};
+
+const loadProductsFromStorage = () => {
+  const data = localStorage.getItem("products");
+  return data ? JSON.parse(data) : null;
+};
+
+let products = loadProductsFromStorage() || [
+  // {
+  //   id: 1,
+  //   name: "Wireless Mouse",
+  //   description: "Compact ergonomic wireless mouse",
+  //   price: 15.99,
+  //   imgUrl: "https://p1-ofp.static.pub//fes/cms/2024/05/20/x70abmv0yon191rf6haufcupbgcimu221325.png",
+  //   stock: 120,
+  //   status: true
+  // },
+  // {
+  //   id: 2,
+  //   name: "Mechanical Keyboard",
+  //   description: "RGB backlit mechanical keyboard",
+  //   price: 49.99,
+  //   imgUrl: "https://p1-ofp.static.pub//fes/cms/2024/05/20/x70abmv0yon191rf6haufcupbgcimu221325.png",
+  //   stock: 75,
+  //   status: true
+  // },
+  // {
+  //   id: 3,
+  //   name: "HD Monitor",
+  //   description: "24-inch Full HD LED monitor",
+  //   price: 129.99,
+  //   imgUrl: "https://p1-ofp.static.pub//fes/cms/2024/05/20/x70abmv0yon191rf6haufcupbgcimu221325.png",
+  //   stock: 35,
+  //   status: true
+  // },
+  // {
+  //   id: 4,
+  //   name: "USB-C Hub",
+  //   description: "7-in-1 USB-C hub with HDMI and Ethernet",
+  //   price: 29.95,
+  //   imgUrl: "https://p1-ofp.static.pub//fes/cms/2024/05/20/x70abmv0yon191rf6haufcupbgcimu221325.png",
+  //   stock: 200,
+  //   status: true
+  // },
+  // {
+  //   id: 5,
+  //   name: "Gaming Headset",
+  //   description: "Surround sound gaming headset",
+  //   price: 59.99,
+  //   imgUrl: "https://p1-ofp.static.pub//fes/cms/2024/05/20/x70abmv0yon191rf6haufcupbgcimu221325.png",
+  //   stock: 50,
+  //   status: true
+  // },
 ];
+
+
 
 
 let formSearch = document.getElementById("form-search");
@@ -116,8 +127,9 @@ document.addEventListener("DOMContentLoaded", displayProducts);
 const handleAddProduct = () => {
   let product = validateInputProduct();
     if (product) {
-        // thành công nhưng sẽ load lại trang và tải lại dữu liêu : Browser Storage
-        products.push(product);
+      products.push(product);
+
+      saveProductsToStorage();
         let myModal = document.getElementById('modal-add');
         let modal = bootstrap.Modal.getInstance(myModal)
         modal.hide();
@@ -129,6 +141,7 @@ const deleteProductById = (id) => {
   if(!confirm("Bạn có chắc chắn muốn xóa sản phẩm này không?")) return;
   products = products.filter(pro => String(pro.id) !== String(id));
 
+  saveProductsToStorage();
   displayProducts();
 }
 
@@ -222,6 +235,7 @@ const handleEditSave = () => {
     stock
   };
 
+  saveProductsToStorage();
   // Close modal
   const modal = bootstrap.Modal.getInstance(document.getElementById("modal-edit"));
   modal.hide();
