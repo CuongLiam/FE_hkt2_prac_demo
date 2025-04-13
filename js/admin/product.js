@@ -113,13 +113,6 @@ const displayProducts = () => {
 document.addEventListener("DOMContentLoaded", displayProducts);
 // displayProducts();
 
-const deleteProductById = (id) => {
-  products = products.filter(pro => pro.id !== id);
-  if(!confirm("Bạn có chắc chắn muốn xóa sản phẩm này không?")) return;
-
-  displayProducts();
-}
-
 const handleAddProduct = () => {
   let product = validateInputProduct();
     if (product) {
@@ -131,6 +124,14 @@ const handleAddProduct = () => {
         displayProducts();
     }
 }
+
+const deleteProductById = (id) => {
+  if(!confirm("Bạn có chắc chắn muốn xóa sản phẩm này không?")) return;
+  products = products.filter(pro => String(pro.id) !== String(id));
+
+  displayProducts();
+}
+
 
 const validateInputProduct = () => {
   // id ko đc để trống
@@ -145,11 +146,10 @@ const validateInputProduct = () => {
   let flag = false;
   if (id.trim() == "") {
       document.getElementById("error_id").innerText = "Không được để trống";
-  } 
-  // else if (!regex_id.test(id)) {
-  //     document.getElementById("error_id").innerText = "Không đúng định dạng , phải bắt đàu bằng chữ P và có 4 kí tự số";
- else if (products.some(p => p.id === id)) {
+  } else if (products.some(p => p.id === id)) {
       document.getElementById("error_id").innerText = "ID đã tồn tại, vui lòng nhập id khác";
+  } else if (isNaN(id)) {
+      document.getElementById("error_id").innerText = "ID phải là số";
   } else {
       document.getElementById("error_id").innerText = "";
       flag = true;
